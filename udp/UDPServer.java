@@ -20,9 +20,9 @@ public class UDPServer {
     private boolean close;
 
     private void run() {
-	int				pacSize;
-	byte[]			pacData;
-	DatagramPacket 	pac;
+	int pacSize;
+	byte[] pacData;
+	DatagramPacket pac;
 
 	// TO-DO: Receive the messages and process them by calling processMessage(...).
 	//        Use a timeout (e.g. 30 secs) to ensure the program doesn't block forever
@@ -33,7 +33,7 @@ public class UDPServer {
 
 	MessageInfo msg = null;
 
-	// TO-DO: Use the data to construct a new MessageInfo object
+	TO-DO: Use the data to construct a new MessageInfo object
 
 	// TO-DO: On receipt of first message, initialise the receive buffer
 
@@ -53,7 +53,7 @@ public class UDPServer {
     }
 
     public static void main(String args[]) {
-	int	recvPort;
+	int recvPort;
 
 	// Get the parameters from command line
 	if (args.length < 1) {
