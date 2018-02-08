@@ -66,10 +66,10 @@ public class UDPClient {
 		System.out.println(e);
 	    }
 	    send(payload, serverAddr, recvPort);
-	}
-    }
+		}
+  }
 
-    private void send(MessageInfo payload, InetAddress destAddr, int destPort) {
+  private void send(MessageInfo payload, InetAddress destAddr, int destPort) {
 	int payloadSize;
 	byte[] pktData;
 	DatagramPacket pkt;
