@@ -49,7 +49,7 @@ public class UDPClient {
 	    sendSoc = new DatagramSocket();
 	}
 	catch(SocketException e){
-	    e.printStackTrace();
+	    System.err.println("Exception:" + e);
 	}
     }
 
@@ -57,14 +57,6 @@ public class UDPClient {
 	int tries = 0;
 	// TO-DO: Send the messages to the server
 	for(tries = 0; tries < countTo; tries++){
-	   // String msg = Integer.toString(countTo) + ';' + Integer.toString(tries+1);
-	   // MessageInfo payload = null;
-	   // try{
-	   //     payload = new MessageInfo(msg);
-	   // }
-	   // catch(Exception e){
-	   //     System.out.println(e);
-	   // }
 	    MessageInfo payload = new MessageInfo(countTo, tries);
 	    send(payload, serverAddr, recvPort);
 	}
@@ -88,7 +80,7 @@ public class UDPClient {
 	    System.out.println("Message sent from client");
 			
 	} catch(IOException e){
-	    e.printStackTrace();
+	    System.err.println("Exception:" + e);
 	}
     }
 }

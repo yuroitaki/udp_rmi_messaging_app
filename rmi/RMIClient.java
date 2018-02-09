@@ -14,8 +14,6 @@ public class RMIClient {
 
     public static void main(String[] args) {
 
-	RMIServerI iRMIServer = null;
-
 	// Check arguments for Server host and number of messages
 	if (args.length < 2){
 	    System.out.println("Needs 2 arguments: ServerHostName/IPAddress, TotalMessageCount");
@@ -45,13 +43,13 @@ public class RMIClient {
 	    }
 	}
 	catch(RemoteException e){
-	    System.out.println("Exception:" +e);
+	    System.err.println("Exception:" +e);
 	}
 	catch(NotBoundException e){
-	    System.out.println("Exception:" +e);
+	    System.err.println("Exception:" +e);
 	}
 	catch(MalformedURLException e){
-	    System.out.println("Exception:" +e);
+	    System.err.println("Exception:" +e);
 	}
     }
 }

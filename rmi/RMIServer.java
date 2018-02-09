@@ -36,10 +36,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI{
 	countMessage++;
 
 	// TO-DO: If this is the last expected message, then identify any missing messages
-	if(msg.messageNum == totalMessages){ 
+	if(countMessage == totalMessages){ 
 		print_summary();
-		countMessage = 0;
-		totalMessages = -1;
 	}
     }
 
@@ -49,7 +47,6 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI{
 	System.out.println("Number of messages received: " + countMessage);
 
     }
-
 
     public static void main(String[] args) {
 
@@ -61,6 +58,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI{
 	}
 
 	// TO-DO: Instantiate the server class
+	// TO-DO: Bind to RMI registry
 	try {
 
 	    String name = "RMIServer";
@@ -71,15 +69,14 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI{
 	} catch (Exception e){
 	    System.out.println("Exception: " + e);
 	}
-
     }
 
     protected static void rebindServer(String serverURL, RMIServerI server) {
 
 	// TO-DO: Start the registry
 	int port = 4444;
-	try {
 
+	try {
  	    Registry reg = LocateRegistry.createRegistry(port);
 
 	    // TO-DO: Now rebind the server to the registry
