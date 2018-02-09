@@ -17,11 +17,11 @@ import common.MessageInfo;
 
 public class UDPServer {
 
-    private static final int PACKET_SIZE = 512;
+    private static final int PACKET_SIZE = 512;      //the size of the datagram packet
     private DatagramSocket recvSoc;
     private int totalMessages = -1;
     private ArrayList<Integer> receivedMessages;
-    private int oriTotalMessage = 0;
+    private int oriTotalMessage = 0;                 //the number of message sent from client
 
     private void run() {
 	byte[] pacData = new byte[PACKET_SIZE];
@@ -42,8 +42,8 @@ public class UDPServer {
 	}
 	catch(SocketTimeoutException e){	    
 	    System.out.println("Exception:" + e);
-	    if(totalMessages!=oriTotalMessage-1){
-		printLogReceipt(false);
+	    if(totalMessages!=oriTotalMessage-1){      //when time is up and not all messages
+		printLogReceipt(false);                //are received
 	    }
     	}
 	catch(IOException e){
@@ -54,14 +54,15 @@ public class UDPServer {
     public void processMessage(byte[] data) {
 
 	MessageInfo msg = null;
-	int messageCode = 0;
+	int messageCode = 0;                      //the message ID/sequence
 	
 	// TO-DO: Use the data to construct a new MessageInfo object
+	// Converting byte array directly back to MessageInfo object
 	try{
 	    ByteArrayInputStream byteInStream = new ByteArrayInputStream(data);
 	    ObjectInputStream objInStream = new ObjectInputStream(byteInStream);
 	    msg = (MessageInfo) objInStream.readObject();
-	    oriTotalMessage = msg.totalMessages;
+	    oriTotalMessage = msg.totalMessages;   
 	    messageCode = msg.messageNum;
 	}
 	catch(IOException e){
@@ -69,6 +70,7 @@ public class UDPServer {
 	}catch(ClassNotFoundException e){
 	    System.err.println("Exception:" + e);
 	}
+	
 	// TO-DO: On receipt of first message, initialise the receive buffer
 
 	totalMessages++;
@@ -93,18 +95,18 @@ public class UDPServer {
 	System.out.println("Number of messages sent = " + oriTotalMessage);
       	System.out.println("Number of messages received = " + receivedMessages.size());
       	
-	if(!msg_stat){
+	if(!msg_stat){ 
 	    ArrayList<Integer> lostMsg = new ArrayList<Integer>();
 	    
 	    for(int i=0; i< oriTotalMessage; i++){
-		if(!findMsgCode(i+1)){
-		    lostMsg.add(i+1);
+		if(!findMsgCode(i+1)){               // find if the message seq is contained in
+		    lostMsg.add(i+1);               // the receiveMessage array
 		}
 	    }
 	    System.out.println("Number of messages lost = " + lostMsg.size() + '\n');
 	    System.out.println("Messages lost = " + lostMsg.toString().replace("[","").replace("]",""));
 	}
-	System.exit(0);
+	System.exit(0);         
     }
 
     private boolean findMsgCode(int msg){
