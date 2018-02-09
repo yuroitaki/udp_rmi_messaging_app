@@ -17,15 +17,14 @@ import common.MessageInfo;
 
 public class UDPServer {
 
+    private static final int PACKET_SIZE = 512;
     private DatagramSocket recvSoc;
     private int totalMessages = -1;
-    // private int[] receivedMessages;
     private ArrayList<Integer> receivedMessages;
-    // private boolean close = true;
     private int oriTotalMessage = 0;
 
     private void run() {
-	byte[] pacData = new byte[1024];
+	byte[] pacData = new byte[PACKET_SIZE];
 	int pacSize = pacData.length;
 	DatagramPacket pac = new DatagramPacket(pacData,pacSize);
 
@@ -42,13 +41,13 @@ public class UDPServer {
 	    }
 	}
 	catch(SocketTimeoutException e){	    
-	    System.out.println(e);
+	    System.out.println("Error:" + e);
 	    if(totalMessages!=oriTotalMessage-1){
 		printLogReceipt(false);
 	    }
     	}
 	catch(IOException e){
-	    e.printStackTrace();
+	    System.err.println("Error:" + e);
 	}
     }
     
@@ -66,9 +65,9 @@ public class UDPServer {
 	    messageCode = msg.messageNum;
 	}
 	catch(IOException e){
-	    e.printStackTrace();
+	    System.err.println("Error:" + e);
 	}catch(ClassNotFoundException e){
-	    e.printStackTrace();
+	    System.err.println("Error:" + e);
 	}
 	// TO-DO: On receipt of first message, initialise the receive buffer
 
@@ -91,10 +90,9 @@ public class UDPServer {
 
     private void printLogReceipt(boolean msg_stat){
 
-	System.out.println("Total number of message sent:" + oriTotalMessage);
-      	System.out.println("Number of messages received:" + receivedMessages.size());
-	System.out.println("Messages received:" + receivedMessages.toString());
-	
+	System.out.println("Number of messages sent = " + oriTotalMessage);
+      	System.out.println("Number of messages received = " + receivedMessages.size());
+      	
 	if(!msg_stat){
 	    ArrayList<Integer> lostMsg = new ArrayList<Integer>();
 	    
@@ -103,9 +101,10 @@ public class UDPServer {
 		    lostMsg.add(i+1);
 		}
 	    }
-	    System.out.println("Number of messages lost:" + lostMsg.size());
-	    System.out.println("Messages lost:" + lostMsg.toString());
+	    System.out.println("Number of messages lost = " + lostMsg.size() + '\n');
+	    System.out.println("Messages lost = " + lostMsg.toString().replace("[","").replace("]",""));
 	}
+	System.exit(0);
     }
 
     private boolean findMsgCode(int msg){
@@ -124,7 +123,7 @@ public class UDPServer {
 	    recvSoc = new DatagramSocket(rp);
 	}
 	catch(SocketException e){
-	    e.printStackTrace();
+	    System.err.println("Error:" + e);
 	}
 	// Done Initialisation
 	System.out.println("UDPServer ready");

@@ -43,6 +43,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI, Unrefe
     }
 
     public void unreferenced(){
+
 	System.out.println("Total number of messages sent: " + totalMessages);
 	System.out.println("Number of messages received: " + countMessage);
 	if(countMessage != totalMessages){
@@ -82,9 +83,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI, Unrefe
 	} catch (Exception e){
 	    e.printStackTrace();
 	}
-
 	// TO-DO: Bind to RMI registry
-		
     }
 
     protected static void rebindServer(String serverURL, RMIServerI server) {
