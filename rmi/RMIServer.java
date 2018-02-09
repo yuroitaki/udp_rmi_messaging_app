@@ -10,97 +10,83 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Arrays;
-import java.rmi.server.Unreferenced;
 
 import common.*;
 
-public class RMIServer extends UnicastRemoteObject implements RMIServerI, Unreferenced {
+public class RMIServer extends UnicastRemoteObject implements RMIServerI{
 
-	private int totalMessages = -1;
-	private int countMessage = 0;
-	private boolean[] receivedMessages;
+    private int totalMessages = -1;
+    private int countMessage = 0;
+    private boolean[] receivedMessages;
 
-	public RMIServer() throws RemoteException {
+    public RMIServer() throws RemoteException {
+	super();
+    }
+
+    public void receiveMessage(MessageInfo msg) throws RemoteException {
+
+	// TO-DO: On receipt of first message, initialise the receive buffer
+	if(totalMessages == -1){
+	    totalMessages = msg.totalMessages;
+	    receivedMessages = new boolean[totalMessages];
 	}
 
-	public void receiveMessage(MessageInfo msg) throws RemoteException {
+	// TO-DO: Log receipt of the message
+	receivedMessages[msg.messageNum-1] = true;
+	countMessage++;
 
-		System.out.println("Message received");
-		// TO-DO: On receipt of first message, initialise the receive buffer
-		if(totalMessages == -1){
-			totalMessages = msg.totalMessages;
-			receivedMessages = new boolean[totalMessages];
-		}
-		// TO-DO: Log receipt of the message
-		receivedMessages[msg.messageNum] = true;
-		countMessage++;
+	// TO-DO: If this is the last expected message, then identify any missing messages
+	if(msg.messageNum == totalMessages){ 
+		print_summary();
+		countMessage = 0;
+		totalMessages = -1;
+	}
+    }
 
-		// TO-DO: If this is the last expected message, then identify
-		//        any missing messages
-		
+    public void print_summary(){
 
+	System.out.println("Total number of messages sent: " + totalMessages);
+	System.out.println("Number of messages received: " + countMessage);
+
+    }
+
+
+    public static void main(String[] args) {
+
+	RMIServer rmis = null;
+
+	// TO-DO: Initialise Security Manager
+	if(System.getSecurityManager() == null){
+	    System.setSecurityManager(new SecurityManager());
 	}
 
-	public void unreferenced(){
-		System.out.println("Total number of messages sent: " + totalMessages);
-		System.out.println("Number of messages received: " + countMessage);
-		if(countMessage != totalMessages){
-			boolean firstLost = false;
-			System.out.println("Messages lost: ");
-			for(int i=0; i<totalMessages; i++){
-				if(firstLost == false && receivedMessages[i]==false){
-					System.out.println(i);
-					firstLost = true;
-				} else if(receivedMessages[i]==false){
-					System.out.println(", " + i);
-				}
-			}
-		}
+	// TO-DO: Instantiate the server class
+	try {
+
+	    String name = "RMIServer";
+	    rmis = new RMIServer();
+	    rebindServer(name, rmis);
+	    System.out.println("RMI Server bound");
+
+	} catch (Exception e){
+	    System.out.println("Exception: " + e);
 	}
 
+    }
 
-	public static void main(String[] args) {
+    protected static void rebindServer(String serverURL, RMIServerI server) {
 
-		RMIServer rmis = null;
+	// TO-DO: Start the registry
+	int port = 4444;
+	try {
 
-		// TO-DO: Initialise Security Manager
-		if(System.getSecurityManager() == null){
-			System.setSecurityManager(new SecurityManager());
-		}
+ 	    Registry reg = LocateRegistry.createRegistry(port);
 
-		// TO-DO: Instantiate the server class
-		try {
-			String name = "receive";
-			rmis = new RMIServer();
-			//RMIServer stub = (RMIServer) UnicastRemoteObject.exportObject(server, 0);
-			//Naming.rebind(name, rmis);
-			rebindServer(name, rmis);
-			System.out.println("RMI Server bound");
-			
-		} catch (Exception e){
-			e.printStackTrace();
-		}
+	    // TO-DO: Now rebind the server to the registry
+	    reg.rebind(serverURL, server);
 
-		// TO-DO: Bind to RMI registry
-		
+	} catch (Exception e) {
+	    System.out.println("Exception: " + e);
 	}
-
-	protected static void rebindServer(String serverURL, RMIServer server) {
-
-		// TO-DO:
-		// Start / find the registry (hint use LocateRegistry.createRegistry(...)
-		// If we *know* the registry is running we could skip this (eg run rmiregistry in the start script)
-		int port = 1099;
-		try {
-			Registry reg = LocateRegistry.createRegistry(port);
-
-		// TO-DO:
-		// Now rebind the server to the registry (rebind replaces any existing servers bound to the serverURL)
-		// Note - Registry.rebind (as returned by createRegistry / getRegistry) does something similar but
-		// expects different things from the URL field.
-			reg.rebind(serverURL, server);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    }
 }
