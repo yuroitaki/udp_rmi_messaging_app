@@ -90,7 +90,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI, Unrefe
 		// TO-DO:
 		// Start / find the registry (hint use LocateRegistry.createRegistry(...)
 		// If we *know* the registry is running we could skip this (eg run rmiregistry in the start script)
-		int port = 4444;
+		int port = 1099;
 		try {
 			Registry reg = LocateRegistry.createRegistry(port);
 
