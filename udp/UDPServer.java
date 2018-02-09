@@ -94,7 +94,8 @@ public class UDPServer {
 
 	System.out.println("Number of messages sent = " + oriTotalMessage);
       	System.out.println("Number of messages received = " + receivedMessages.size());
-      	
+	// System.out.println("Messages received = " + receivedMessages.toString());
+	
 	if(!msg_stat){ 
 	    ArrayList<Integer> lostMsg = new ArrayList<Integer>();
 	    
