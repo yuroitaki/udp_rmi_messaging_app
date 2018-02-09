@@ -71,7 +71,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI{
 	}
     }
 
-    protected static void rebindServer(String serverURL, RMIServerI server) {
+    protected static void rebindServer(String serverURL, RMIServer server) {
 
 	// TO-DO: Start the registry
 	int port = 4444;

@@ -28,15 +28,15 @@ public class RMIClient {
 	if(System.getSecurityManager() == null){
 	    System.setSecurityManager(new SecurityManager());
 	}
-		
-	// TO-DO: Bind to RMIServer
-	// TO-DO: Attempt to send messages the specified number of times
-
+	       
 	MessageInfo msg = null;
-	
-	try{
-	    RMIServerI msgServer = (RMIServerI) Naming.lookup(urlServer);
 
+	// TO-DO: Bind to RMIServer
+	try{
+	    RMIServer msgServer = (RMIServer) Naming.lookup(urlServer);
+
+	    // TO-DO: Attempt to send messages the specified number of times
+	    
 	    for(int i=0; i< numMessages; i++){
 		msg = new MessageInfo(numMessages,i+1);
 		msgServer.receiveMessage(msg);
