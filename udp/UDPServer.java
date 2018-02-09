@@ -32,7 +32,7 @@ public class UDPServer {
 	//        Use a timeout (e.g. 30 secs) to ensure the program doesn't block forever
 
 	try{
-	    recvSoc.setSoTimeout(10000);
+	    recvSoc.setSoTimeout(30000);
 	    
 	    while(true){
 		recvSoc.receive(pac);
