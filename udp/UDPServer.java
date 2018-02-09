@@ -41,13 +41,13 @@ public class UDPServer {
 	    }
 	}
 	catch(SocketTimeoutException e){	    
-	    System.out.println("Error:" + e);
+	    System.out.println("Exception:" + e);
 	    if(totalMessages!=oriTotalMessage-1){
 		printLogReceipt(false);
 	    }
     	}
 	catch(IOException e){
-	    System.err.println("Error:" + e);
+	    System.err.println("Exception:" + e);
 	}
     }
     
@@ -65,9 +65,9 @@ public class UDPServer {
 	    messageCode = msg.messageNum;
 	}
 	catch(IOException e){
-	    System.err.println("Error:" + e);
+	    System.err.println("Exception:" + e);
 	}catch(ClassNotFoundException e){
-	    System.err.println("Error:" + e);
+	    System.err.println("Exception:" + e);
 	}
 	// TO-DO: On receipt of first message, initialise the receive buffer
 
@@ -123,7 +123,7 @@ public class UDPServer {
 	    recvSoc = new DatagramSocket(rp);
 	}
 	catch(SocketException e){
-	    System.err.println("Error:" + e);
+	    System.err.println("Exception:" + e);
 	}
 	// Done Initialisation
 	System.out.println("UDPServer ready");
