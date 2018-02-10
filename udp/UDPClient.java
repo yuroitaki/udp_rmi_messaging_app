@@ -64,7 +64,7 @@ public class UDPClient {
 	// TO-DO: Send the messages to the server
 	// Construct MessageInfo class and send it to the server
 	for(tries = 0; tries < countTo; tries++){
-	    MessageInfo payload = new MessageInfo(countTo, tries);
+	    MessageInfo payload = new MessageInfo(countTo, tries + 1);
 	    send(payload, serverAddr, recvPort);
 	}
   }
