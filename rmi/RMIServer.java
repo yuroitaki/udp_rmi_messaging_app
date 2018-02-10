@@ -40,6 +40,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI{
 	if(countMessage == totalMessages){ 
 		System.out.println("Total number of messages sent: " + totalMessages);
 		System.out.println("Number of messages received: " + countMessage);
+		totalMessages = -1;
+		countMessage = 0;
 	}
     }
     
